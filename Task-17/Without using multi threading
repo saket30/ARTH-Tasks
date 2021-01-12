@@ -1,0 +1,23 @@
+import socket
+import os
+import time
+
+s=socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+print("------------------------------------------\n")
+print("\t\tChat Application without multithreading")
+print("------------------------------------------\n")
+print("Hii.... This is WINDOWS10\n")            
+ip=input("Enter your IP: ")
+port=int(input("Enter your port number: "))
+sendip=input("Enter sender IP: ")
+sendport=int(input("Enter sender port number: "))
+s.bind((ip,port))
+while True:
+  i=input("enter your message:")
+  s.sendto(i.encode(), (sendip,sendport))
+  x=s.recvfrom(20)
+  clientip=x[1][0]
+
+  data=x[0].decode()
+
+  print(clientip + " : " + data)
