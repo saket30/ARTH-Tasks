@@ -1,0 +1,39 @@
+import socket
+import threading
+import os
+import time
+
+s = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+print("------------------------------------------\n")
+print("\t\tChat Application using multithreading")
+print("------------------------------------------\n")
+print("Hii.... This is WINDOWS10\n") 
+
+ip = input("\n\t\tEnter Your IP : ")
+port =int(input("\n\tEnter your port number :"))
+
+clientip = input("\n\t\tEnter Sender IP : ")
+clientport =int(input("\n\tEnter sender port number :"))
+
+s.bind( (ip,port) )
+
+def send():
+    while True:
+        msg = input("Your Message: ").encode()
+        s.sendto(msg,(clientip,clientport))
+        if msg.decode() == "exit" or msg.decode() == "quit":
+            os._exit(1)
+
+def recv():
+    while True:
+        msg = s.recvfrom(1024)
+        if msg[0].decode() == "quit" or msg[0].decode() == "exit":
+            os._exit(1)
+        print('\n\t\t\t\t\t\tReceived Msg: '+ msg[0].decode())
+
+
+t1 = threading.Thread(target=recv)
+t2 = threading.Thread(target=send)
+
+t1.start()
+t2.start()
